@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 const ContactSection = ({ visibleSections }) => {
   const [formData, setFormData] = useState({
@@ -7,10 +7,28 @@ const ContactSection = ({ visibleSections }) => {
     company: '',
     message: '',
   });
+  const [submitStatus, setSubmitStatus] = useState(null); // 'sending', 'success', 'error'
+  const [focusedField, setFocusedField] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    setSubmitStatus('sending');
+    
+    // Simulate form submission (replace with actual API call)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', company: '', message: '' });
+      setTimeout(() => setSubmitStatus(null), 4000);
+    } catch (error) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(null), 4000);
+    }
+  }, [formData]);
 
   return (
     <section 
@@ -349,6 +367,8 @@ const ContactSection = ({ visibleSections }) => {
                 <button 
                   type="submit"
                   className="secondary-cta"
+                  onClick={handleSubmit}
+                  disabled={submitStatus === 'sending'}
                   style={{
                     marginTop: 15,
                     padding: '20px 40px',
@@ -356,17 +376,34 @@ const ContactSection = ({ visibleSections }) => {
                     letterSpacing: 0.5,
                     fontFamily: "'Manrope', sans-serif",
                     fontWeight: 500,
-                    cursor: 'pointer',
+                    cursor: submitStatus === 'sending' ? 'wait' : 'pointer',
                     borderRadius: 4,
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 10,
+                    opacity: submitStatus === 'sending' ? 0.7 : 1,
+                    transition: 'all 0.3s ease',
                   }}
                 >
-                  <span>Send Message</span>
-                  <span>→</span>
+                  <span>
+                    {submitStatus === 'sending' ? 'Sending...' : 
+                     submitStatus === 'success' ? 'Message Sent!' : 
+                     submitStatus === 'error' ? 'Try Again' : 'Send Message'}
+                  </span>
+                  <span>{submitStatus === 'success' ? '✓' : submitStatus === 'error' ? '!' : '→'}</span>
                 </button>
+                
+                {submitStatus === 'success' && (
+                  <p style={{
+                    marginTop: 15,
+                    fontSize: 14,
+                    color: '#10b981',
+                    fontFamily: "'Space Grotesk', monospace",
+                  }}>
+                    Thank you! We'll be in touch soon.
+                  </p>
+                )}
               </div>
             </form>
           </div>

@@ -1,28 +1,47 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import AnimatedGlobe from './AnimatedGlobe';
 
 const Hero = ({ loaded }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
+  const parallaxRef = useRef({ x: 0, y: 0 });
+  const rafRef = useRef(null);
+
+  // Smooth parallax effect for decorative elements
+  const updateParallax = useCallback(() => {
+    const elements = heroRef.current?.querySelectorAll('[data-parallax]');
+    if (elements) {
+      elements.forEach(el => {
+        const speed = parseFloat(el.dataset.parallax) || 0.5;
+        el.style.transform = `translate(${parallaxRef.current.x * speed}px, ${parallaxRef.current.y * speed}px)`;
+      });
+    }
+    rafRef.current = requestAnimationFrame(updateParallax);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (heroRef.current) {
         const rect = heroRef.current.getBoundingClientRect();
-        setMousePosition({
+        parallaxRef.current = {
           x: (e.clientX - rect.left - rect.width / 2) / 50,
           y: (e.clientY - rect.top - rect.height / 2) / 50,
-        });
+        };
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    rafRef.current = requestAnimationFrame(updateParallax);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [updateParallax]);
 
   return (
     <section 
       ref={heroRef}
+      className="hero-section"
       style={{
         minHeight: '100vh',
         display: 'flex',
@@ -44,44 +63,56 @@ const Hero = ({ loaded }) => {
         opacity: 0.8,
       }} />
 
-      {/* Floating decorative shapes */}
-      <div style={{
-        position: 'absolute',
-        top: '15%',
-        left: '5%',
-        width: 400,
-        height: 400,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%)',
-        animation: 'floatSlow 15s ease-in-out infinite',
-        pointerEvents: 'none',
-        transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
-      }} />
+      {/* Floating decorative shapes with parallax */}
+      <div 
+        data-parallax="0.5"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '15%',
+          left: '5%',
+          width: 400,
+          height: 400,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%)',
+          animation: 'floatSlow 15s ease-in-out infinite',
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }} 
+      />
       
-      <div style={{
-        position: 'absolute',
-        bottom: '10%',
-        right: '15%',
-        width: 300,
-        height: 300,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(0,0,0,0.015) 0%, transparent 70%)',
-        animation: 'floatSlow 12s ease-in-out infinite reverse',
-        pointerEvents: 'none',
-        transform: `translate(${mousePosition.x * -0.3}px, ${mousePosition.y * -0.3}px)`,
-      }} />
+      <div 
+        data-parallax="-0.3"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '15%',
+          width: 300,
+          height: 300,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(0,0,0,0.015) 0%, transparent 70%)',
+          animation: 'floatSlow 12s ease-in-out infinite reverse',
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }} 
+      />
 
       {/* Decorative lines */}
-      <svg style={{
-        position: 'absolute',
-        top: '20%',
-        right: '10%',
-        width: 200,
-        height: 200,
-        opacity: 0.05,
-        pointerEvents: 'none',
-        transform: `translate(${mousePosition.x * 0.8}px, ${mousePosition.y * 0.8}px)`,
-      }}>
+      <svg 
+        data-parallax="0.8"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '20%',
+          right: '10%',
+          width: 200,
+          height: 200,
+          opacity: 0.05,
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }}
+      >
         <circle cx="100" cy="100" r="80" fill="none" stroke="#000" strokeWidth="0.5" />
         <circle cx="100" cy="100" r="60" fill="none" stroke="#000" strokeWidth="0.5" />
         <circle cx="100" cy="100" r="40" fill="none" stroke="#000" strokeWidth="0.5" />

@@ -66,9 +66,9 @@ const TestimonialsSection = ({ visibleSections }) => {
             fontFamily: "'Space Grotesk', monospace",
             marginBottom: 20,
           }}>
-            <span style={{ display: 'block', width: 40, height: 1, background: '#ccc' }} />
-            Client Stories
-            <span style={{ display: 'block', width: 40, height: 1, background: '#ccc' }} />
+            <span style={{ display: 'block', width: 40, height: 1, background: '#ccc' }} aria-hidden="true" />
+            Testimonials
+            <span style={{ display: 'block', width: 40, height: 1, background: '#ccc' }} aria-hidden="true" />
           </span>
           <h2 style={{ 
             fontFamily: "'Cormorant Garamond', serif", 

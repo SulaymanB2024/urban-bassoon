@@ -293,8 +293,9 @@ body {
 
 .project-item {
   cursor: pointer;
-  transition: all 0.5s var(--ease-out-expo);
+  transition: transform 0.5s var(--ease-out-expo);
   position: relative;
+  will-change: transform;
 }
 
 .project-item::before {
@@ -333,6 +334,8 @@ body {
 .project-thumbnail {
   position: relative;
   overflow: hidden;
+  transition: transform 0.5s var(--ease-out-expo), 
+              box-shadow 0.5s var(--ease-out-expo);
 }
 
 .project-thumbnail::after {
@@ -349,9 +352,13 @@ body {
    ======================================== */
 
 .service-card {
-  transition: all 0.5s var(--ease-out-expo);
+  transition: transform 0.5s var(--ease-out-expo),
+              box-shadow 0.5s var(--ease-out-expo),
+              color 0.3s ease;
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  color: inherit;
 }
 
 .service-card::before {
@@ -466,7 +473,8 @@ body {
   background: var(--color-primary);
   color: #fff;
   border: none;
-  transition: all 0.4s var(--ease-out-expo);
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
   position: relative;
   overflow: hidden;
 }
@@ -504,7 +512,8 @@ body {
    ======================================== */
 
 .team-card { 
-  transition: all 0.5s var(--ease-out-expo); 
+  transition: transform 0.5s var(--ease-out-expo);
+  will-change: transform;
 }
 
 .team-card:hover { 
@@ -512,7 +521,7 @@ body {
 }
 
 .team-avatar {
-  transition: all 0.5s var(--ease-out-expo);
+  transition: transform 0.5s var(--ease-out-expo);
   position: relative;
   overflow: hidden;
 }
@@ -537,7 +546,8 @@ body {
 }
 
 .team-initials {
-  transition: all 0.4s var(--ease-out-expo);
+  transition: color 0.4s var(--ease-out-expo),
+              transform 0.4s var(--ease-out-expo);
   position: relative;
   z-index: 1;
 }
@@ -635,6 +645,15 @@ body {
   padding: 10px;
   z-index: 1001;
   position: relative;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.hamburger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .hamburger span {
@@ -671,7 +690,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 50px;
+  gap: 40px;
+  padding: 100px 30px 50px;
+  overflow-y: auto;
 }
 
 .mobile-menu.open { 
@@ -680,14 +701,32 @@ body {
 
 .mobile-menu a { 
   font-family: var(--font-serif); 
-  font-size: 42px; 
+  font-size: 36px; 
   color: var(--color-primary); 
   text-decoration: none;
   transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: mobileMenuFadeIn 0.5s ease forwards;
 }
 
-.mobile-menu a:hover {
+.mobile-menu.open a:nth-child(1) { animation-delay: 0.1s; }
+.mobile-menu.open a:nth-child(2) { animation-delay: 0.15s; }
+.mobile-menu.open a:nth-child(3) { animation-delay: 0.2s; }
+.mobile-menu.open a:nth-child(4) { animation-delay: 0.25s; }
+.mobile-menu.open a:nth-child(5) { animation-delay: 0.3s; }
+.mobile-menu.open a:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes mobileMenuFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-menu a:active {
   opacity: 0.5;
+  transform: scale(0.98);
 }
 
 .newsletter-btn {
@@ -750,15 +789,22 @@ body {
 
 .custom-cursor {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 20px;
   height: 20px;
   border: 1px solid var(--color-primary);
   border-radius: 50%;
   pointer-events: none;
   z-index: 10000;
-  transition: all 0.15s var(--ease-out-expo);
-  transform: translate(-50%, -50%);
+  transition: width 0.2s var(--ease-out-expo), 
+              height 0.2s var(--ease-out-expo), 
+              background 0.2s var(--ease-out-expo),
+              border-color 0.2s var(--ease-out-expo),
+              opacity 0.2s ease;
   mix-blend-mode: difference;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .custom-cursor.hover {
@@ -770,13 +816,17 @@ body {
 
 .cursor-dot {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 4px;
   height: 4px;
   background: var(--color-primary);
   border-radius: 50%;
   pointer-events: none;
   z-index: 10001;
-  transform: translate(-50%, -50%);
+  transition: opacity 0.15s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* ========================================
@@ -805,13 +855,22 @@ body {
   color: var(--color-primary);
 }
 
+/* Process connector lines (visible on desktop) */
+@media (min-width: 901px) {
+  .process-connector {
+    display: block !important;
+  }
+}
+
 /* ========================================
    TESTIMONIAL CARDS
    ======================================== */
 
 .testimonial-card {
-  transition: all 0.5s var(--ease-out-expo);
+  transition: transform 0.5s var(--ease-out-expo),
+              box-shadow 0.5s var(--ease-out-expo);
   position: relative;
+  will-change: transform;
 }
 
 .testimonial-card:hover {
@@ -981,68 +1040,381 @@ body {
 }
 
 /* ========================================
-   RESPONSIVE
+   RESPONSIVE - COMPLETE MOBILE REBUILD
    ======================================== */
 
+/* Large tablets and small desktops */
 @media (max-width: 1100px) {
   .globe-container { 
     display: none !important; 
   }
+  
+  section {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
 }
 
+/* Tablets */
 @media (max-width: 900px) {
   .hamburger { 
     display: flex; 
   }
+  
   .desktop-nav { 
     display: none !important; 
   }
+  
+  section {
+    padding: 100px 30px !important;
+  }
+  
+  /* Navigation adjustments */
+  nav {
+    padding: 15px 20px !important;
+  }
+  
+  /* About section */
   .about-grid { 
     grid-template-columns: 1fr !important; 
-    gap: 40px !important; 
+    gap: 50px !important; 
   }
+  
+  /* Team grid */
   .team-grid { 
     grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
   }
+  
+  /* Footer */
   .footer-grid { 
     grid-template-columns: 1fr 1fr !important; 
     gap: 40px !important; 
   }
+  
+  /* Services */
   .services-grid { 
-    grid-template-columns: 1fr 1fr !important; 
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
   }
+  
+  .service-card {
+    padding: 35px 25px !important;
+    min-height: auto !important;
+  }
+  
+  /* Stats */
   .stats-row { 
-    flex-direction: row !important; 
-    flex-wrap: wrap;
-    gap: 30px !important; 
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 25px !important; 
   }
+  
+  /* Process */
   .process-grid {
     grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
   }
+  
+  /* Testimonials */
   .testimonial-grid {
     grid-template-columns: 1fr !important;
+    gap: 20px !important;
   }
+  
+  /* Contact */
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 50px !important;
+  }
+  
+  /* Hide custom cursor */
   .custom-cursor,
   .cursor-dot {
     display: none !important;
   }
+  
+  /* Project cards */
+  .project-item {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    padding: 25px 20px !important;
+  }
+  
+  .project-thumbnail {
+    width: 100% !important;
+    height: 180px !important;
+  }
+  
+  /* Typography adjustments */
+  h1 {
+    font-size: clamp(36px, 8vw, 60px) !important;
+  }
+  
+  h2 {
+    font-size: clamp(28px, 5vw, 42px) !important;
+  }
+  
+  /* CTA section in services */
+  .services-cta {
+    padding: 40px 30px !important;
+    flex-direction: column !important;
+    text-align: center;
+  }
 }
 
+/* Mobile phones */
 @media (max-width: 600px) {
+  /* Base section padding */
+  section {
+    padding: 80px 20px !important;
+  }
+  
+  /* Navigation */
+  nav {
+    padding: 12px 16px !important;
+  }
+  
+  /* Hero specific */
+  .hero-section {
+    padding-top: 100px !important;
+    padding-bottom: 60px !important;
+  }
+  
+  /* Mobile menu */
+  .mobile-menu {
+    padding: 100px 30px 50px;
+    gap: 30px !important;
+  }
+  
+  .mobile-menu a {
+    font-size: 28px !important;
+  }
+  
+  /* Services - single column */
   .services-grid { 
     grid-template-columns: 1fr !important; 
+    gap: 16px !important;
   }
+  
+  .service-card {
+    padding: 30px 22px !important;
+  }
+  
+  .service-card h3 {
+    font-size: 24px !important;
+  }
+  
+  /* Team - single column */
   .team-grid {
     grid-template-columns: 1fr !important;
+    gap: 16px !important;
   }
+  
+  /* Footer - single column */
   .footer-grid {
     grid-template-columns: 1fr !important;
+    gap: 35px !important;
   }
-  .mobile-menu a {
-    font-size: 32px;
-  }
+  
+  /* Process - single column */
   .process-grid {
     grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  .process-step {
+    padding: 30px 22px !important;
+  }
+  
+  /* Stats - 2 column grid */
+  .stats-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+  }
+  
+  /* Project cards */
+  .project-item {
+    padding: 20px 16px !important;
+  }
+  
+  .project-thumbnail {
+    height: 150px !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Remove project arrow animation on mobile */
+  .project-arrow {
+    display: none !important;
+  }
+  
+  /* Fix project description padding */
+  .project-item p {
+    padding-left: 0 !important;
+  }
+  
+  .project-item .tag-pill {
+    margin-left: 0;
+  }
+  
+  /* Fix tags row padding */
+  .project-item > div:nth-child(2) > div:last-child {
+    padding-left: 0 !important;
+  }
+  
+  /* Testimonial cards */
+  .testimonial-card {
+    padding: 30px 22px !important;
+  }
+  
+  /* Contact form */
+  .contact-form-wrapper {
+    padding: 30px 22px !important;
+  }
+  
+  /* Typography */
+  h1 {
+    font-size: clamp(32px, 9vw, 48px) !important;
+    letter-spacing: -1px !important;
+  }
+  
+  h2 {
+    font-size: clamp(26px, 6vw, 36px) !important;
+  }
+  
+  h3 {
+    font-size: clamp(22px, 5vw, 28px) !important;
+  }
+  
+  /* Buttons */
+  .cta-button,
+  .secondary-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 24px !important;
+  }
+  
+  /* Section headers */
+  .section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+  }
+  
+  .section-header p {
+    max-width: 100% !important;
+  }
+  
+  /* Hide scroll indicator on mobile */
+  .scroll-indicator {
+    display: none !important;
+  }
+  
+  /* Hide decorative elements on mobile */
+  .floating-shape,
+  .grid-pattern,
+  [aria-hidden="true"]:not(.noise-overlay) {
+    opacity: 0.3 !important;
+  }
+  
+  /* Marquee */
+  .marquee span {
+    font-size: 20px !important;
+  }
+  
+  /* About section mission box */
+  .mission-box {
+    padding: 25px !important;
+  }
+  
+  /* Footer CTA */
+  footer .footer-cta {
+    flex-direction: column !important;
+    text-align: center;
+    gap: 25px !important;
+  }
+  
+  footer .footer-cta a {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  section {
+    padding: 60px 16px !important;
+  }
+  
+  nav {
+    padding: 10px 12px !important;
+  }
+  
+  .mobile-menu a {
+    font-size: 24px !important;
+  }
+  
+  h1 {
+    font-size: 28px !important;
+  }
+  
+  h2 {
+    font-size: 24px !important;
+  }
+  
+  .stats-row {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .service-card,
+  .process-step,
+  .testimonial-card {
+    padding: 24px 18px !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects */
+  .project-item:hover,
+  .service-card:hover,
+  .team-card:hover,
+  .testimonial-card:hover {
+    transform: none !important;
+  }
+  
+  /* Make tap targets larger */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Remove hover state backgrounds */
+  .service-card:hover::before {
+    opacity: 0 !important;
+  }
+  
+  .service-card {
+    color: inherit !important;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 900px) and (orientation: landscape) {
+  .hero-section {
+    min-height: auto !important;
+    padding: 100px 30px 60px !important;
+  }
+  
+  .mobile-menu {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px 40px !important;
+  }
+  
+  .mobile-menu a {
+    font-size: 24px !important;
   }
 }
 
@@ -1057,4 +1429,197 @@ body {
   .scroll-indicator {
     display: none !important;
   }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary);
+  color: #fff;
+  padding: 16px 32px;
+  z-index: 100000;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.3s var(--ease-out-expo);
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: none;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Remove default focus for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================
+   ENHANCED FORM STYLES
+   ======================================== */
+
+input::placeholder,
+textarea::placeholder {
+  color: #bbb;
+  font-weight: 300;
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* Autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-primary);
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .marquee {
+    animation: none !important;
+  }
+  
+  .fade-in-section {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ========================================
+   LOADING SKELETON
+   ======================================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-alt) 0%,
+    var(--color-bg) 50%,
+    var(--color-bg-alt) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* ========================================
+   SMOOTH SCROLL ENHANCEMENTS
+   ======================================== */
+
+html {
+  scroll-padding-top: 100px;
+}
+
+/* Section spacing for scroll-snap */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* ========================================
+   SELECTION HIGHLIGHTING
+   ======================================== */
+
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+::-moz-selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ========================================
+   MICRO-INTERACTIONS
+   ======================================== */
+
+/* Subtle button press effect */
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Link underline animation */
+.animated-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.animated-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Card hover lift effect */
+.hover-lift {
+  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }

@@ -103,8 +103,13 @@ function App() {
         position: 'relative',
       }}
     >
+      {/* Skip link for keyboard accessibility */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       {/* Noise texture overlay for sophisticated feel */}
-      <div className="noise-overlay" />
+      <div className="noise-overlay" aria-hidden="true" />
 
       {/* Custom cursor for desktop */}
       <CustomCursor />
@@ -117,7 +122,7 @@ function App() {
       />
 
       {/* Main content */}
-      <main>
+      <main id="main-content">
         {/* Hero Section */}
         <Hero loaded={loaded} />
 

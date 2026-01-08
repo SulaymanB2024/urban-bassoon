@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ServiceDetailModal from './ServiceDetailModal';
 
 const ServicesSection = ({ services, visibleSections }) => {
+  const [selectedService, setSelectedService] = useState(null);
+
   return (
-    <section id="services" style={{ 
-      padding: '160px 50px', 
-      background: '#fff',
-      position: 'relative',
-    }}>
-      {/* Decorative elements */}
-      <div style={{
-        position: 'absolute',
-        bottom: 100,
-        left: 50,
-        width: 200,
-        height: 200,
-        border: '1px solid rgba(0,0,0,0.03)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-      }} />
+    <>
+      <ServiceDetailModal 
+        service={selectedService}
+        isOpen={!!selectedService}
+        onClose={() => setSelectedService(null)}
+      />
+      
+      <section id="services" style={{ 
+        padding: '160px 50px', 
+        background: '#fff',
+        position: 'relative',
+      }}>
+        {/* Decorative elements */}
+        <div style={{
+          position: 'absolute',
+          bottom: 100,
+          left: 50,
+          width: 200,
+          height: 200,
+          border: '1px solid rgba(0,0,0,0.03)',
+          borderRadius: '50%',
+          pointerEvents: 'none',
+        }} />
 
       <div style={{ maxWidth: 1400, margin: '0 auto' }}>
         {/* Section Header */}
@@ -155,18 +165,22 @@ const ServicesSection = ({ services, visibleSections }) => {
                 paddingTop: 20, 
                 borderTop: '1px solid rgba(0,0,0,0.05)',
               }}>
-                <a 
-                  href={`#${service.title.toLowerCase()}`}
+                <button 
+                  onClick={() => setSelectedService(service)}
                   style={{
                     fontSize: 12,
                     letterSpacing: 0.5,
                     color: 'inherit',
-                    textDecoration: 'none',
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 8,
                     opacity: 0.6,
                     transition: 'all 0.3s ease',
+                    fontFamily: "'Manrope', sans-serif",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.opacity = '1';
@@ -176,10 +190,11 @@ const ServicesSection = ({ services, visibleSections }) => {
                     e.currentTarget.style.opacity = '0.6';
                     e.currentTarget.style.gap = '8px';
                   }}
+                  aria-label={`Learn more about ${service.title}`}
                 >
                   <span>Learn more</span>
                   <span>→</span>
-                </a>
+                </button>
               </div>
             </div>
           ))}
@@ -250,6 +265,7 @@ const ServicesSection = ({ services, visibleSections }) => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

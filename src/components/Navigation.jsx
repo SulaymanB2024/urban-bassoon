@@ -36,7 +36,11 @@ const Navigation = ({ loaded, mobileMenuOpen, setMobileMenuOpen }) => {
     <>
       {/* Mobile Menu */}
       <div 
+        id="mobile-menu"
         className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
         style={{
           background: mobileMenuOpen ? 'rgba(250, 250, 250, 0.98)' : 'transparent',
           backdropFilter: mobileMenuOpen ? 'blur(20px)' : 'none',
@@ -70,26 +74,34 @@ const Navigation = ({ loaded, mobileMenuOpen, setMobileMenuOpen }) => {
       </div>
 
       {/* Navigation */}
-      <nav style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: scrolled ? '18px 50px' : '25px 50px',
-        zIndex: 1000,
-        background: scrolled ? 'rgba(250, 250, 250, 0.92)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
-        opacity: loaded ? 1 : 0,
-        transform: hidden ? 'translateY(-100%)' : loaded ? 'translateY(0)' : 'translateY(-20px)',
-        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-      }}>
+      <nav 
+        role="navigation"
+        aria-label="Main navigation"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: scrolled ? '18px 50px' : '25px 50px',
+          zIndex: 1000,
+          background: scrolled ? 'rgba(250, 250, 250, 0.92)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
+          opacity: loaded ? 1 : 0,
+          transform: hidden ? 'translateY(-100%)' : loaded ? 'translateY(0)' : 'translateY(-20px)',
+          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
+      >
         {/* Logo */}
-        <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+        <a 
+          href="#" 
+          aria-label="VOID - Home"
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'flex-start', gap: 2 }}
+        >
           <span style={{ 
             fontFamily: "'Cormorant Garamond', serif", 
             fontSize: 28, 
@@ -102,7 +114,7 @@ const Navigation = ({ loaded, mobileMenuOpen, setMobileMenuOpen }) => {
             fontWeight: 300,
             color: '#000',
             opacity: 0.5,
-          }}>®</span>
+          }} aria-hidden="true">®</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -140,14 +152,17 @@ const Navigation = ({ loaded, mobileMenuOpen, setMobileMenuOpen }) => {
         </a>
 
         {/* Hamburger Menu */}
-        <div 
+        <button 
           className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
         >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
       </nav>
     </>
   );

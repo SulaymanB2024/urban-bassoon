@@ -73,7 +73,7 @@ const WorkSection = ({ projects, activeProject, setActiveProject, visibleSection
       </div>
       
       {/* Projects Grid */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }} role="list">
         {projects.map((project, index) => (
           <div
             key={project.id}
@@ -90,9 +90,15 @@ const WorkSection = ({ projects, activeProject, setActiveProject, visibleSection
               border: '1px solid #f0f0f0',
               background: activeProject === project.id ? '#fafafa' : '#fff',
               transitionDelay: `${index * 0.1}s`,
+              outline: 'none',
             }}
             onMouseEnter={() => setActiveProject(project.id)}
             onMouseLeave={() => setActiveProject(null)}
+            onFocus={() => setActiveProject(project.id)}
+            onBlur={() => setActiveProject(null)}
+            tabIndex={0}
+            role="listitem"
+            aria-label={`Project: ${project.name} - ${project.category}`}
           >
             {/* Thumbnail */}
             <div 
